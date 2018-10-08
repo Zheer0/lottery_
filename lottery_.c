@@ -796,3 +796,58 @@ int strToNumber(char numbers[]){
     }
     return sum;
 }
+int strToNumber2(char numbers[]){
+    int length=strlen(numbers)-1;//获取有效字符串长度
+    int sum=0;
+    int i;
+    for(i=0;i<length;i++)
+    {
+        if(numbers[i]>='0'&&numbers[i]<='9')
+            sum+=((int)numbers[i]-48)*powTen(length-i-1);
+        else
+        {
+            return -1;
+        }
+    }
+    return sum;
+}
+
+void save(NODE *head){
+	FILE *fpw = fopen("user.txt", "w");
+	if(fpw==NULL)
+		exit(1);
+    NODE *p;
+    for (p = head->next; p != NULL; p = p->next) {
+    	fprintf(fpw,"%d\n", p->id);
+    	fprintf(fpw,"%s\n", p->name);
+    	fprintf(fpw,"%s\n", p->psd);
+    	fprintf(fpw,"%d\n", p->gender);
+    	fprintf(fpw,"%d\n", p->grade);
+    	fprintf(fpw,"%s\n", p->info);
+    }
+    fclose(fpw);
+}
+
+int getSum(int *lottery,int len) {
+    int sum = 0;
+    int v;
+    for (v=0;v<len;v++) {
+        sum += lottery[v];
+    }
+    return sum;
+}
+
+int getLotteryLevel(int *lottery, int len) {
+	//抽奖算法
+	int sum = getSum(lottery, len);
+	int i;
+	for(i=0;i<len;i++){
+		int randNum = rand() % sum +1;
+        if (randNum <= lottery[i]) {
+            return i;
+        } else {
+            sum -= lottery[i];
+        }		
+	}
+	return -1;
+}
