@@ -836,3 +836,58 @@ int getSum(int *lottery,int len) {
     }
     return sum;
 }
+
+int getLotteryLevel(int *lottery, int len) {
+	//抽奖算法
+	int sum = getSum(lottery, len);
+	int i;
+	for(i=0;i<len;i++){
+		int randNum = rand() % sum +1;
+        if (randNum <= lottery[i]) {
+            return i;
+        } else {
+            sum -= lottery[i];
+        }		
+	}
+	return -1;
+}
+char * cut(char* src){
+	int length=strlen(src);//获取有效字符串长度
+	char ret[length];
+    int i;
+    for(i=0;i<length-1;i++)
+    {
+        ret[i]=src[i];
+    }
+    ret[length-1]='\0';
+    return ret;
+}
+
+void saveconfs(int slen,int sgetrs,int sconf_scoll,int sglen,int sgstyle,int snlen,int snstyle,char *sprize_info[],char *sreword_info[],int *sprize_num,int *sa,char *sproinfo,char *sget_prize_info[],char *snot_get_prize_info[]){
+	FILE *fpw = fopen("conf.txt", "w");
+	if(fpw==NULL)
+		exit(1);
+		
+	fprintf(fpw, "%d\n", slen);
+	fprintf(fpw, "%d\n", sgetrs);//getrs conf_scoll, glen, gstyle, nlen,nstyle
+	fprintf(fpw, "%d\n", sconf_scoll);
+	fprintf(fpw, "%d\n", sglen);
+	fprintf(fpw, "%d\n", sgstyle);
+	fprintf(fpw, "%d\n", snlen);
+	fprintf(fpw, "%d\n", snstyle);
+	int spid;
+	fprintf(fpw, "%s\n", "奖品类别");
+	for(spid=0;spid<slen;spid++){
+		fprintf(fpw, "%s\n", sprize_info[spid]);
+	}
+	fprintf(fpw, "%s\n", "奖品信息");
+	for(spid=0;spid<slen;spid++){
+		fprintf(fpw, "%s\n", sreword_info[spid]);
+	}
+	fprintf(fpw, "%s\n", "奖品数量");
+	for(spid=0;spid<slen;spid++){
+		fprintf(fpw, "%d\n", sprize_num[spid]);
+	}
+	fprintf(fpw, "%s\n", "中奖人信息");
+	
+}
