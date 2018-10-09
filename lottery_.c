@@ -221,6 +221,74 @@ NODE * login(NODE *head){
 	return NULL;
 }
 
+void regest(NODE *head){
+	//printf("regest\n");
+	//display(head);
+	//int id, gender, grade;
+	char id[10],gender[5],grade[5];
+	char name[NAME_LENGTH], psd[PSD_LENGTH], rpsd[PSD_LENGTH], info[INFO_LENGTH];
+	while(1){
+		printf("请输入学号\n>>");
+		scanf("%s", id);
+		int nid = strToNumber(id);
+		if(nid<=0)
+			printf("输入有误!");
+		else if(find(head,strToNumber(id))!=NULL)
+			printf("学号已存在!");
+		else
+			break;
+	}
+	while(1){
+		printf("请输入用户名\n>>");
+		scanf("%s", name);
+		break;
+	}
+	while(1){
+		printf("请输入密码\n>>");
+		scanf("%s", psd);
+		printf("请再次输入密码\n>>");
+		scanf("%s", rpsd);
+		if(strcmp(psd,rpsd)==0)
+			break;
+		else
+			printf("两次输出不同,重新输入!\n");
+	}
+	while(1){
+		printf("请输入性别:男(1),女(2)\n>>");
+		scanf("%s", gender);
+		int temp=strToNumber(gender);
+		printf("%d \n", temp);
+		if(1<=temp&&temp<=2)
+			break;
+		else
+			printf("输入有误!");
+	}
+	while(1){
+		printf("请输入年级:大一(1),大二(2),大三(3),大四(4)\n>>");
+		scanf("%s", grade);
+		int temp=strToNumber(grade);
+		printf("%d \n", temp);
+		if(1<=temp&&temp<=4)
+			break;
+		else
+			printf("输入有误!");
+	}
+	printf("请输入个人简介\n>>");
+	scanf("%s", info);
+	NODE *pnew = (NODE*)malloc(sizeof(NODE));
+	pnew->id = strToNumber(id);
+	strcpy(pnew->name,name);
+	strcpy(pnew->psd,psd);
+	//pnew->name = name;
+	//pnew->psd = psd;
+	pnew->gender = strToNumber(gender);
+	pnew->grade = strToNumber(grade);
+	//pnew->info = info;
+	strcpy(pnew->info,info);
+    insert(head, pnew, 1);
+    printf("\n");
+    save(head);
+    printf("注册成功!请登录:\n");
 }
 
 void loop(NODE *head){
@@ -767,77 +835,4 @@ int getSum(int *lottery,int len) {
         sum += lottery[v];
     }
     return sum;
-}
-
-int getLotteryLevel(int *lottery, int len) {
-	//抽奖算法
-	int sum = getSum(lottery, len);
-	int i;
-	for(i=0;i<len;i++){
-		int randNum = rand() % sum +1;
-        if (randNum <= lottery[i]) {
-            return i;
-        } else {
-            sum -= lottery[i];
-        }		
-	}
-	return -1;
-}
-char * cut(char* src){
-	int length=strlen(src);//获取有效字符串长度
-	char ret[length];
-    int i;
-    for(i=0;i<length-1;i++)
-    {
-        ret[i]=src[i];
-    }
-    ret[length-1]='\0';
-    return ret;
-}
-
-void saveconfs(int slen,int sgetrs,int sconf_scoll,int sglen,int sgstyle,int snlen,int snstyle,char *sprize_info[],char *sreword_info[],int *sprize_num,int *sa,char *sproinfo,char *sget_prize_info[],char *snot_get_prize_info[]){
-	FILE *fpw = fopen("conf.txt", "w");
-	if(fpw==NULL)
-		exit(1);
-		
-	fprintf(fpw, "%d\n", slen);
-	fprintf(fpw, "%d\n", sgetrs);//getrs conf_scoll, glen, gstyle, nlen,nstyle
-	fprintf(fpw, "%d\n", sconf_scoll);
-	fprintf(fpw, "%d\n", sglen);
-	fprintf(fpw, "%d\n", sgstyle);
-	fprintf(fpw, "%d\n", snlen);
-	fprintf(fpw, "%d\n", snstyle);
-	int spid;
-	fprintf(fpw, "%s\n", "奖品类别");
-	for(spid=0;spid<slen;spid++){
-		fprintf(fpw, "%s\n", sprize_info[spid]);
-	}
-	fprintf(fpw, "%s\n", "奖品信息");
-	for(spid=0;spid<slen;spid++){
-		fprintf(fpw, "%s\n", sreword_info[spid]);
-	}
-	fprintf(fpw, "%s\n", "奖品数量");
-	for(spid=0;spid<slen;spid++){
-		fprintf(fpw, "%d\n", sprize_num[spid]);
-	}
-	fprintf(fpw, "%s\n", "中奖人信息");
-	for(spid=0;spid<sgetrs;spid++){
-		fprintf(fpw, "%d\n", sa[2*spid]);
-		fprintf(fpw, "%d\n", sa[2*spid+1]);
-	}
-	fprintf(fpw, "%s\n", "项目信息");
-	fprintf(fpw, "%s\n", sproinfo);
-
-	fprintf(fpw, "%s\n", "成功信息");
-	for(spid=0;spid<sglen;spid++){
-		fprintf(fpw, "%s\n", sget_prize_info[spid]);
-	}
-	fprintf(fpw, "%s\n", "失败信息");
-	for(spid=0;spid<snlen;spid++){
-		fprintf(fpw, "%s\n", snot_get_prize_info[spid]);
-	}
-	
-
-	//fprintf(fpw, "%d\n", );
-	fclose(fpw);
 }
