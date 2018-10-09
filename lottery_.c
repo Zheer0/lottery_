@@ -889,5 +889,23 @@ void saveconfs(int slen,int sgetrs,int sconf_scoll,int sglen,int sgstyle,int snl
 		fprintf(fpw, "%d\n", sprize_num[spid]);
 	}
 	fprintf(fpw, "%s\n", "中奖人信息");
+	for(spid=0;spid<sgetrs;spid++){
+		fprintf(fpw, "%d\n", sa[2*spid]);
+		fprintf(fpw, "%d\n", sa[2*spid+1]);
+	}
+	fprintf(fpw, "%s\n", "项目信息");
+	fprintf(fpw, "%s\n", sproinfo);
+
+	fprintf(fpw, "%s\n", "成功信息");
+	for(spid=0;spid<sglen;spid++){
+		fprintf(fpw, "%s\n", sget_prize_info[spid]);
+	}
+	fprintf(fpw, "%s\n", "失败信息");
+	for(spid=0;spid<snlen;spid++){
+		fprintf(fpw, "%s\n", snot_get_prize_info[spid]);
+	}
 	
+
+	//fprintf(fpw, "%d\n", );
+	fclose(fpw);
 }
